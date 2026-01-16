@@ -1,6 +1,6 @@
 # Linear Dashboard Mirror
 
-This repository mirrors a Linear dashboard view to GitHub Pages, automatically updating the dashboard on a schedule.
+This repository mirrors a Linear dashboard view to GitHub Pages, automatically updating the dashboard on a schedule. The dashboard features **interactive drag-and-drop** functionality, allowing you to move cards between columns and automatically sync changes back to Linear.
 
 ## Setup
 
@@ -21,6 +21,7 @@ This repository mirrors a Linear dashboard view to GitHub Pages, automatically u
    ```env
    LINEAR_API_KEY=your_linear_api_key_here
    LINEAR_VIEW_NAME=rr-intermediacoes
+   WORKER_URL=https://your-worker.workers.dev  # Optional: for drag-and-drop updates
    ```
 
 ### Usage
@@ -51,3 +52,37 @@ If you want to automatically update the dashboard, set up a GitHub Actions workf
 - Commits the updated `docs/index.html` back to the repository
 
 Make sure to add `LINEAR_API_KEY` as a GitHub secret in your repository settings.
+
+## Drag-and-Drop Updates
+
+The dashboard supports interactive drag-and-drop to move issues between columns. Changes are automatically synced back to Linear via a Cloudflare Worker proxy.
+
+### Setting Up the Cloudflare Worker
+
+1. **Deploy the worker** (see `worker/README.md` for detailed instructions):
+   ```bash
+   cd worker
+   wrangler login
+   wrangler secret put LINEAR_API_KEY
+   wrangler deploy
+   ```
+
+2. **Add the worker URL** to your environment:
+   - For local development: Add `WORKER_URL` to your `.env` file
+   - For GitHub Actions: Add `WORKER_URL` as a repository variable or secret
+
+3. **Regenerate the dashboard** with the worker URL:
+   ```bash
+   uv run python generate.py
+   ```
+
+The dashboard will automatically enable drag-and-drop when `WORKER_URL` is set. Without it, the dashboard works in read-only mode.
+
+### How It Works
+
+- Drag a card to move it between columns
+- The worker securely updates Linear's API (your API key stays server-side)
+- Changes are reflected immediately in the UI
+- If an update fails, the card reverts to its original position
+
+See `worker/README.md` for more details on the Cloudflare Worker setup.
