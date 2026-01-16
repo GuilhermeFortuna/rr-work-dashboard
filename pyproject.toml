@@ -1,0 +1,16 @@
+[project]
+name = "rr-work-dashboard"
+version = "0.1.0"
+description = "Mirror Linear dashboard view to GitHub Pages"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["generate.py"]

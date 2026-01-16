@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>rr-intermediacoes - Linear Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #003c2b;
+      color: #e0e8ea;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #1a2a2f;
+    }
+    .header h1 {
+      color: #00ff88;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .header small {
+      color: #6b7d85;
+      font-size: 12px;
+    }
+    .board {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+    }
+    .column {
+      min-width: 280px;
+      background: #0f1618;
+      border-radius: 8px;
+      border: 1px solid #1a2a2f;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 120px);
+    }
+    .column-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #1a2a2f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .column-title {
+      color: #00ff88;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .column-count {
+      color: #6b7d85;
+      font-size: 12px;
+      background: #1a2a2f;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .column-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+    .card {
+      background: #141e22;
+      border: 1px solid #1a2a2f;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .card:hover {
+      border-color: #00ff88;
+      box-shadow: 0 0 12px rgba(0, 255, 136, 0.2);
+      transform: translateY(-2px);
+    }
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card-identifier {
+      color: #6b7d85;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      color: #e0e8ea;
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .card-labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      flex: 1;
+    }
+    .label {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .label-green { background: #00ff88; color: #0a0e0f; }
+    .label-purple { background: #a855f7; color: #fff; }
+    .label-blue { background: #3b82f6; color: #fff; }
+    .label-orange { background: #f97316; color: #fff; }
+    .label-default { background: #1a2a2f; color: #e0e8ea; }
+    .card-assignee {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #00ff88;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0a0e0f;
+      font-size: 10px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .card-assignee img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .status-indicator {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .status-backlog { background: #6b7d85; }
+    .status-todo { background: #f97316; }
+    .status-progress { background: #3b82f6; }
+    .status-waiting { background: #fbbf24; }
+    .status-done { background: #00ff88; }
+    .status-cancelled { background: #ef4444; }
+    @media (max-width: 768px) {
+      .board { flex-direction: column; }
+      .column { min-width: 100%; max-height: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class='header'>
+    <h1>rr-intermediacoes</h1>
+    <small>Updated 2026-01-16T03:24:29.045292Z</small>
+  </div>
+  <div class='board'>
+    <div class='column'>
+      <div class='column-header'>
+        <span class='column-title'>A Fazer</span>
+        <span class='column-count'>2</span>
+      </div>
+      <div class='column-content'>
+        <div class='card'>
+          <span class='status-indicator status-todo'></span>
+          <a href='https://linear.app/rr-intermediacoes/issue/RR-9/analisar-integracao-de-sistema-de-alerta-com-slack' target='_blank' class='card-link'>
+            <div class='card-identifier'>RR-9</div>
+            <div class='card-title'>Analisar integração de sistema de alerta com Slack</div>
+            <div class='card-footer'>
+              <div class='card-labels'></div>
+              <div class='card-assignee'><img src='https://public.linear.app/e984ee56-c2cd-4628-be3c-c8a0072c0d48/106a476a-2786-410e-b81b-27a9f70c2a3d' alt='Guilherme Fortuna dos Santos' /></div>
+            </div>
+          </a>
+        </div>
+        <div class='card'>
+          <span class='status-indicator status-todo'></span>
+          <a href='https://linear.app/rr-intermediacoes/issue/RR-8/revisar-integracao-com-gosigapp-para-producao' target='_blank' class='card-link'>
+            <div class='card-identifier'>RR-8</div>
+            <div class='card-title'>Revisar integração com gosigapp para produção</div>
+            <div class='card-footer'>
+              <div class='card-labels'></div>
+              <div class='card-assignee'><img src='https://public.linear.app/e984ee56-c2cd-4628-be3c-c8a0072c0d48/106a476a-2786-410e-b81b-27a9f70c2a3d' alt='Guilherme Fortuna dos Santos' /></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class='column'>
+      <div class='column-header'>
+        <span class='column-title'>Em Progresso</span>
+        <span class='column-count'>1</span>
+      </div>
+      <div class='column-content'>
+        <div class='card'>
+          <span class='status-indicator status-progress'></span>
+          <a href='https://linear.app/rr-intermediacoes/issue/RR-7/revisar-se-backend-esta-pronto-para-producao' target='_blank' class='card-link'>
+            <div class='card-identifier'>RR-7</div>
+            <div class='card-title'>Revisar se backend está pronto para produção</div>
+            <div class='card-footer'>
+              <div class='card-labels'></div>
+              <div class='card-assignee'><img src='https://public.linear.app/e984ee56-c2cd-4628-be3c-c8a0072c0d48/106a476a-2786-410e-b81b-27a9f70c2a3d' alt='Guilherme Fortuna dos Santos' /></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class='column'>
+      <div class='column-header'>
+        <span class='column-title'>Aguardando</span>
+        <span class='column-count'>1</span>
+      </div>
+      <div class='column-content'>
+        <div class='card'>
+          <span class='status-indicator status-waiting'></span>
+          <a href='https://linear.app/rr-intermediacoes/issue/RR-11/testar-integracao-do-datarudder-com-dados-reais' target='_blank' class='card-link'>
+            <div class='card-identifier'>RR-11</div>
+            <div class='card-title'>Testar integração do datarudder com dados reais</div>
+            <div class='card-footer'>
+              <div class='card-labels'>
+                <span class='label label-default'>Feature</span>
+              </div>
+              <div class='card-assignee'><img src='https://public.linear.app/e984ee56-c2cd-4628-be3c-c8a0072c0d48/106a476a-2786-410e-b81b-27a9f70c2a3d' alt='Guilherme Fortuna dos Santos' /></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class='column'>
+      <div class='column-header'>
+        <span class='column-title'>Concluído</span>
+        <span class='column-count'>3</span>
+      </div>
+      <div class='column-content'>
+        <div class='card'>
+          <span class='status-indicator status-done'></span>
+          <a href='https://linear.app/rr-intermediacoes/issue/RR-10/testar-abertura-de-uma-task' target='_blank' class='card-link'>
+            <div class='card-identifier'>RR-10</div>
+            <div class='card-title'>Testar abertura de uma task</div>
+            <div class='card-footer'>
+              <div class='card-labels'></div>
+              <div class='card-assignee'><img src='https://public.linear.app/e984ee56-c2cd-4628-be3c-c8a0072c0d48/106a476a-2786-410e-b81b-27a9f70c2a3d' alt='Guilherme Fortuna dos Santos' /></div>
+            </div>
+          </a>
+        </div>
+        <div class='card'>
+          <span class='status-indicator status-done'></span>
+          <a href='https://linear.app/rr-intermediacoes/issue/RR-6/criar-canal-no-slack-e-integrar-workspace-do-linear' target='_blank' class='card-link'>
+            <div class='card-identifier'>RR-6</div>
+            <div class='card-title'>Criar canal no Slack e integrar workspace do Linear</div>
+            <div class='card-footer'>
+              <div class='card-labels'>
+                <span class='label label-default'>Feature</span>
+              </div>
+              <div class='card-assignee'><img src='https://public.linear.app/e984ee56-c2cd-4628-be3c-c8a0072c0d48/106a476a-2786-410e-b81b-27a9f70c2a3d' alt='Guilherme Fortuna dos Santos' /></div>
+            </div>
+          </a>
+        </div>
+        <div class='card'>
+          <span class='status-indicator status-done'></span>
+          <a href='https://linear.app/rr-intermediacoes/issue/RR-5/criar-workspace-no-linear' target='_blank' class='card-link'>
+            <div class='card-identifier'>RR-5</div>
+            <div class='card-title'>Criar workspace no Linear</div>
+            <div class='card-footer'>
+              <div class='card-labels'>
+                <span class='label label-default'>Improvement</span>
+              </div>
+              <div class='card-assignee'><img src='https://public.linear.app/e984ee56-c2cd-4628-be3c-c8a0072c0d48/106a476a-2786-410e-b81b-27a9f70c2a3d' alt='Guilherme Fortuna dos Santos' /></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
