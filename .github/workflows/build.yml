@@ -35,6 +35,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           LINEAR_VIEW_NAME: ${{ vars.LINEAR_VIEW_NAME || 'rr-intermediacoes' }}
           LINEAR_ISSUE_LIMIT: ${{ vars.LINEAR_ISSUE_LIMIT || '50' }}
+          WORKER_URL: ${{ secrets.WORKER_URL }}
 
       - name: Commit and push changes
         run: |
